@@ -1,0 +1,24 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesExplPackage{diff-op}{2026-02-13}{0.1.0}{Provide beautiful and easy to use math differentials}
+
+\ExplSyntaxOn
+
+\keys_define:nn {diffop_setup}
+  {
+    renewnabla .bool_set:N = \l_diffop_renewnabla_bool,
+    renewnabla .default:n = {false},
+    renewnabla .initial:n = {false}
+  }
+
+\NewDocumentCommand {\diffopsetup} {m}
+  {
+    \keys_set:nn {diffop_setup} {#1}
+    \bool_if:NT \l_diffop_renewnabla_bool
+      {
+        \renewcommand{\nabla}{\raisebox{0.5ex}{$\bigtriangledown$}}
+      }
+  }
+
+\ExplSyntaxOff
+
+\endinput
