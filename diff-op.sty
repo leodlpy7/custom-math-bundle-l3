@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesExplPackage{diff-op}{2026-02-13}{0.1.0}{Provide beautiful and easy to use math differentials}
+\ProvidesExplPackage{diff-op}{2026-02-13}{0.2.0}{Provide beautiful and easy to use math differentials}
 
 \ExplSyntaxOn
 
@@ -17,6 +17,54 @@
       {
         \renewcommand{\nabla}{\raisebox{0.5ex}{$\bigtriangledown$}}
       }
+  }
+
+\msg_new:nnn {diff-op} {outside_math_mode}
+  {Can~not~use~`\exp_not:n {#1}'~outside~math~mode.}
+
+\NewDocumentCommand {\grad} {s}%
+  {%
+    \if_mode_math:%
+      \bool_if:NTF #1%
+        {%
+          \mathrm{grad}\,%
+        }%
+        {%
+          \nabla%
+        }%
+    \else:%
+      \msg_error:nnn {diff-op} {outside_math_mode} {\grad}%
+    \fi:%
+  }
+
+\RenewDocumentCommand {\div} {s}%
+  {%
+    \if_mode_math:%
+      \bool_if:NTF #1%
+        {%
+          \mathrm{div}\,%
+        }%
+        {%
+          \nabla\!\cdot\!%
+        }%
+    \else:%
+      \msg_error:nnn {diff-op} {outside_math_mode} {\div}%
+    \fi:%
+  }
+
+\NewDocumentCommand {\rot} {s}%
+  {%
+    \if_mode_math:%
+      \bool_if:NTF #1%
+        {%
+          \mathrm{rot}\,%
+        }%
+        {%
+          \nabla\!\times\!%
+        }%
+    \else:%
+      \msg_error:nnn {diff-op} {outside_math_mode} {\rot}%
+    \fi:%
   }
 
 \ExplSyntaxOff
