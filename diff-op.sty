@@ -27,7 +27,13 @@
     % of the nabla symbol used by amsmath
     renewnabla .bool_set:N = \l_diffop_renewnabla_bool,
     renewnabla .default:n = {false},
-    renewnabla .initial:n = {false}
+    renewnabla .initial:n = {false},
+    renewnabla .usage:n = preamble,
+    % set the font of the differential operator
+    font .tl_set:N = \l_diffop_font_tl,
+    font .default:n = {\mathrm},
+    font .initial:n = {\mathrm},
+    font .usage:n = preamble
   }
 
 % diff-op package setup to modify the behaviour of the package
@@ -53,7 +59,7 @@
     \if_mode_math:%
       \bool_if:NTF #1%
         {%
-          \mathrm{grad}\,%
+          \tl_use:N \l_diffop_font_tl {grad}\,%
         }%
         {%
           \nabla%
@@ -70,7 +76,7 @@
     \if_mode_math:%
       \bool_if:NTF #1%
         {%
-          \mathrm{div}\,%
+          \tl_use:N \l_diffop_font_tl {div}\,%
         }%
         {%
           \nabla\!\cdot\!%
@@ -87,7 +93,7 @@
     \if_mode_math:%
       \bool_if:NTF #1%
         {%
-          \mathrm{rot}\,%
+          \tl_use:N \l_diffop_font_tl {rot}\,%
         }%
         {%
           \nabla\!\times\!%
