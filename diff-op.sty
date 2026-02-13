@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesExplPackage{diff-op}{2026-02-13}{0.2.0}{Provide beautiful and easy to use math differentials}
+\ProvidesExplPackage{diff-op}{2026-02-13}{0.3.0}{Provide beautiful and easy to use math differentials}
 
 \ExplSyntaxOn
 
@@ -67,6 +67,29 @@
     \fi:%
   }
 
+\NewDocumentCommand {\laplacian} {s}%
+  {%
+    \if_mode_math:%
+      \bool_if:NTF #1%
+        {%
+          \Delta%
+        }%
+        {%
+          \triangle%
+        }%
+    \else:%
+      \msg_error:nnn {diff-op} {outside_math_mode} {\laplacian}%
+    \fi:%
+  }
+
+\NewDocumentCommand {\dalembertian} {}%
+  {%
+    \if_mode_math:%
+      \square%
+    \else:%
+      \msg_error:nnn {diff-op} {outside_math_mode} {\dalembertian}%
+    \fi:%
+  }
 \ExplSyntaxOff
 
 \endinput
