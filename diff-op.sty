@@ -1,27 +1,53 @@
+% Copyright 2026 Leonard Delpy
+%
+% Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+% associated documentation files (the “Software”), to deal in the Software without restriction,
+% including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+% and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+% subject to the following conditions:
+%
+% The above copyright notice and this permission notice shall be included in all copies or substantial
+% portions of the Software.
+%
+% THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+% LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+% WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesExplPackage{diff-op}{2026-02-13}{0.3.0}{Provide beautiful and easy to use math differentials}
 
 \ExplSyntaxOn
 
+% define keys for the diff-op package setup
 \keys_define:nn {diffop_setup}
   {
+    % renew the nabla symbol to use the bigtriangledown symbol instead
+    % of the nabla symbol used by amsmath
     renewnabla .bool_set:N = \l_diffop_renewnabla_bool,
     renewnabla .default:n = {false},
     renewnabla .initial:n = {false}
   }
 
-\NewDocumentCommand {\diffopsetup} {m}
-  {
-    \keys_set:nn {diffop_setup} {#1}
-    \bool_if:NT \l_diffop_renewnabla_bool
-      {
-        \renewcommand{\nabla}{\raisebox{0.5ex}{$\bigtriangledown$}}
-      }
+% diff-op package setup to modify the behaviour of the package
+% the options are passed as key-value pairs
+\NewDocumentCommand {\diffopsetup} {m}%
+  {%
+    \keys_set:nn {diffop_setup} {#1}%
+    \bool_if:NT \l_diffop_renewnabla_bool%
+      {%
+        \renewcommand{\nabla}{\raisebox{0.5ex}{$\bigtriangledown$}}%
+      }%
   }
 
+% message template for a general error message that the differential operators
+% can not be used outside math mode
 \msg_new:nnn {diff-op} {outside_math_mode}
   {Can~not~use~`\exp_not:n {#1}'~outside~math~mode.}
 
+% gradient operator, the starred version expands to grad, the unstarred to the
+% nabla operator
 \NewDocumentCommand {\grad} {s}%
   {%
     \if_mode_math:%
@@ -37,6 +63,8 @@
     \fi:%
   }
 
+% divergence operator, the starred version expands to div, the unstarred to the
+% nabla operator
 \RenewDocumentCommand {\div} {s}%
   {%
     \if_mode_math:%
@@ -52,6 +80,8 @@
     \fi:%
   }
 
+% rotation (or curl) operator, the starred version expands to rot, the unstarred
+% to the nabla operator
 \NewDocumentCommand {\rot} {s}%
   {%
     \if_mode_math:%
@@ -67,6 +97,10 @@
     \fi:%
   }
 
+% laplacian, the starred version expands to \Delta, the unstarred to the \triangle
+% this default behaviour is chosen because there can be confusion if the \Delta
+% is used inside a formula as the laplacian, the \triangle visualizes the difference
+% of the (perhabs used) \Delta and the \laplacian
 \NewDocumentCommand {\laplacian} {s}%
   {%
     \if_mode_math:%
@@ -82,6 +116,8 @@
     \fi:%
   }
 
+% d'Alembertian operator, there is no starred version available, the \dalembertian
+% expands to the \square, but is more idiomatic when used inside a formula
 \NewDocumentCommand {\dalembertian} {}%
   {%
     \if_mode_math:%
@@ -90,6 +126,7 @@
       \msg_error:nnn {diff-op} {outside_math_mode} {\dalembertian}%
     \fi:%
   }
+
 \ExplSyntaxOff
 
 \endinput
