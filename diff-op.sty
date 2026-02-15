@@ -16,7 +16,7 @@
 % SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesExplPackage{diff-op}{2026-02-13}{0.5.0}{Provide beautiful and easy to use math differentials}
+\ProvidesExplPackage{diff-op}{2026-02-13}{0.5.1}{Provide beautiful and easy to use math differentials}
 
 \ExplSyntaxOn
 
@@ -43,7 +43,7 @@
     \keys_set:nn {diffop_setup} {#1}%
     \bool_if:NT \l_diffop_renewnabla_bool%
       {%
-        \renewcommand{\nabla}{\raisebox{0.5ex}{$\bigtriangledown$}}%
+        \renewcommand{\nabla}{\mathop{\raisebox{0.5ex}{$\bigtriangledown$}}}%
       }%
   }
 
@@ -91,7 +91,7 @@
           \tl_use:N \l_diffop_font_tl {grad}\,%
         }%
         {%
-          \nabla%
+          \nabla\!%
         }%
     \else:%
       \msg_error:nnn {diff-op} {outside_math_mode} {\grad}%
@@ -108,7 +108,7 @@
           \tl_use:N \l_diffop_font_tl {div}\,%
         }%
         {%
-          \nabla\!\cdot\!%
+          \nabla\!\cdot%
         }%
     \else:%
       \msg_error:nnn {diff-op} {outside_math_mode} {\div}%
@@ -125,7 +125,7 @@
           \tl_use:N \l_diffop_font_tl {rot}\,%
         }%
         {%
-          \nabla\!\times\!%
+          \nabla\!\times%
         }%
     \else:%
       \msg_error:nnn {diff-op} {outside_math_mode} {\rot}%
