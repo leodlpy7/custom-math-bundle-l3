@@ -83,9 +83,17 @@
 \msg_new:nnn {diff-op} {already_defined}
   {The~differential~operator~`\exp_not:n {#1}'~is~already~defined.}
 
+\keys_define:nn {diffop_declare}
+  {
+    font .tl_set:N = \l_diffop_decl_font_tl,
+    font .default:n = {},
+    font .initial:n = {}
+  }
+
 % declare differential operators as needed
-\cs_new_protected:Npn \declare_diff_op:Nn #1#2%
+\cs_new_protected:Npn \declare_diff_op:Nnn #1#2#3%
   {%
+    \group_begin:%
     \cs_if_exist:NTF #1%
       {%
         \msg_error:nnn {diff-op} {already_defined} {#1}%
@@ -98,13 +106,23 @@
             \msg_error:nnn {diff-op} {outside_math_mode} {#1}%
           \fi:%
         }%
+        \keys_set:nn {diffop_declare} {#3}%
+        \cs_gset:Npn #1%
+          {%
+            \if_mode_math:%
+              \tl_use:N \l_diffop_decl_font_tl {#2}%
+            \else:%
+              \msg_error:nnn {diff-op} {outside_math_mode} {#1}%
+            \fi:%
+          }%
       }%
+    \group_end:%
   }
 
 % convenience command made for the user
 \NewDocumentCommand {\DeclareDiffOp} {m m o}%
   {%
-    \declare_diff_op:Nn {#1} {#2}%
+    \declare_diff_op:Nnn {#1} {#2} {#3}%
   }
 
 
