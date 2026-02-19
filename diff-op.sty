@@ -16,7 +16,7 @@
 % SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesExplPackage{diff-op}{2026-02-20}{0.6.0}{Provide beautiful and easy to use math differentials}
+\ProvidesExplPackage{diff-op}{2026-02-20}{0.7.0}{Provide beautiful and easy to use math differentials}
 
 \ExplSyntaxOn
 
@@ -192,6 +192,34 @@
     \else:%
       \msg_error:nnn {diff-op} {outside_math_mode} {\dalembertian}%
     \fi:%
+  }
+
+% (total) derivative, this command changes its appearence based on the mode it is used in
+\NewDocumentCommand {\dv} {o m m}%
+  {%
+    \if_mode_inner:%
+      \tl_use:N \g_diffop_font_tl {d} \char_generate:nn {1} {8} {#3\IfNoValueF{#1}{^#1}} #2%
+    \else:%
+      \if_mode_math:%
+        \frac{\tl_use:N \g_diffop_font_tl {d}\IfNoValueF{#1}{^#1} #2}{\tl_use:N \g_diffop_font_tl {d} #3\IfNoValueF{#1}{^#1}}%
+      \else:%
+        \msg_error:nnn {diff-op} {outside_math_mode} {\dv}%
+      \fi%
+    \fi%
+  }
+
+% partial derivative, this command changes its appearence based on the mode it is used in
+\NewDocumentCommand {\pdv} {o m m}%
+  {
+    \if_mode_inner:%
+      \partial \char_generate:nn {1} {8} {#3\IfNoValueF{#1}{^#1}} #2%
+    \else:%
+      \if_mode_math:%
+        \frac{\partial\IfNoValueF{#1}{^#1} #2}{\partial #3\IfNoValueF{#1}{^#1}}%
+      \else:%
+        \msg_error:nnn {diff-op} {outside_math_mode} {\dv}%
+      \fi%
+    \fi%
   }
 
 \ExplSyntaxOff
